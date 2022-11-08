@@ -53,6 +53,14 @@ class QueryParameterValidator
     public function validateFilters(string $resourceClass, array $resourceFilters, array $queryParameters): void
     {
         $errorList = [];
+        // dump($resourceClass);
+        // dump($resourceFilters);
+        // dump($queryParameters);
+
+        /** @var \App\Doctrine\Orm\Filter\SearchFilter $searchFilter */
+        $searchFilter = $this
+            ->getFilter('annotated_app_entity_book_api_platform_doctrine_orm_filter_search_filter');
+        dump($searchFilter->getDescription($resourceClass));
 
         foreach ($resourceFilters as $filterId) {
             if (!$filter = $this->getFilter($filterId)) {

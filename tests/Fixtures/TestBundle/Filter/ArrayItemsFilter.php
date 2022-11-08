@@ -13,13 +13,15 @@ declare(strict_types=1);
 
 namespace ApiPlatform\Tests\Fixtures\TestBundle\Filter;
 
+use ApiPlatform\Api\QueryParameterValidator\ValidatedFilterInterface;
 use ApiPlatform\Doctrine\Common\PropertyHelperTrait;
 use ApiPlatform\Doctrine\Orm\Filter\AbstractFilter;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\JsonSchema\Schema;
 use ApiPlatform\Metadata\Operation;
 use Doctrine\ORM\QueryBuilder;
 
-class ArrayItemsFilter extends AbstractFilter
+class ArrayItemsFilter extends AbstractFilter implements ValidatedFilterInterface
 {
     use PropertyHelperTrait;
 
@@ -83,5 +85,9 @@ class ArrayItemsFilter extends AbstractFilter
                 ],
             ],
         ];
+    }
+
+    public function getSchema(): Schema
+    {
     }
 }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace ApiPlatform\OpenApi\Model;
 
+// parametr openapi
 final class Parameter
 {
     use ExtensionTrait;

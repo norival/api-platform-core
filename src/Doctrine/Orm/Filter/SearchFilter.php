@@ -20,6 +20,7 @@ use ApiPlatform\Doctrine\Common\Filter\SearchFilterTrait;
 use ApiPlatform\Doctrine\Orm\Util\QueryBuilderHelper;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Exception\InvalidArgumentException;
+use ApiPlatform\JsonSchema\SchemaFactory;
 use ApiPlatform\Metadata\Operation;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Query\Expr\Join;
@@ -41,13 +42,16 @@ final class SearchFilter extends AbstractFilter implements SearchFilterInterface
 
     public const DOCTRINE_INTEGER_TYPE = Types::INTEGER;
 
-    public function __construct(ManagerRegistry $managerRegistry, IriConverterInterface $iriConverter, PropertyAccessorInterface $propertyAccessor = null, LoggerInterface $logger = null, array $properties = null, IdentifiersExtractorInterface $identifiersExtractor = null, NameConverterInterface $nameConverter = null)
+    private SchemaFactory $schemaFactory;
+
+    public function __construct(ManagerRegistry $managerRegistry, IriConverterInterface $iriConverter, SchemaFactory $schemaFactory, PropertyAccessorInterface $propertyAccessor = null, LoggerInterface $logger = null, array $properties = null, IdentifiersExtractorInterface $identifiersExtractor = null, NameConverterInterface $nameConverter = null)
     {
         parent::__construct($managerRegistry, $logger, $properties, $nameConverter);
 
         $this->iriConverter = $iriConverter;
         $this->identifiersExtractor = $identifiersExtractor;
         $this->propertyAccessor = $propertyAccessor ?: PropertyAccess::createPropertyAccessor();
+        $this->schemaFactory = $schemaFactory;
     }
 
     protected function getIriConverter(): IriConverterInterface
@@ -167,6 +171,7 @@ final class SearchFilter extends AbstractFilter implements SearchFilterInterface
 
                 return;
             }
+            // commencer par documentation
 
             $queryBuilder
                 ->andWhere($queryBuilder->expr()->in($wrapCase($aliasedField), $valueParameter))
